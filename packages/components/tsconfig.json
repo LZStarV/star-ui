@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declaration": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "button/**/*.ts",
+    "button/**/*.vue",
+    "vite-env.d.ts",
+    "index.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
