@@ -9,6 +9,7 @@ export default {
     '**/build/**/*',
     '**/coverage/**/*',
     '.vitepress/dist/**/*',
+    '.vitepress/cache/**/*',
     // 忽略非样式文件
     '**/*.{js,jsx,ts,tsx,vue,json,md,html}',
     // 忽略特定文件

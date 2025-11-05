@@ -3,11 +3,11 @@ import globals from 'globals';
 import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 import tsParser from '@typescript-eslint/parser';
-import prettier from 'eslint-plugin-prettier';
-import type { FlatConfig } from 'eslint';
+import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
 // 基础配置
-const config: FlatConfig[] = [
+const config = [
   {
     // 忽略规则
     ignores: [
@@ -17,6 +17,7 @@ const config: FlatConfig[] = [
       '**/build/',
       '**/coverage/',
       '**/.vitepress/dist/',
+      '**/.vitepress/cache/',
       '**/.temp/',
       '**/.cache/',
 
@@ -96,34 +97,44 @@ const config: FlatConfig[] = [
       vue: vuePlugin,
     },
     rules: {
-      ...vuePlugin.configs['flat/essential'].rules,
+      // 直接配置Vue规则，避免访问可能不存在的rules属性
       'vue/multi-word-component-names': 'off',
+      'vue/require-default-prop': 'warn',
+      'vue/require-prop-types': 'warn',
+      'vue/no-unused-vars': 'warn',
+      'vue/no-side-effects-in-computed-properties': 'error',
+      'vue/valid-v-for': 'error',
+      'vue/valid-template-root': 'error',
+    },
+  },
+
+  // 在ESLint 9 flat config中配置Prettier插件
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,vue}'],
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      // 启用Prettier规则
+      'prettier/prettier': 'warn',
+    },
+  },
+
+  // 使用eslint-config-prettier禁用所有与Prettier冲突的规则
+  prettierConfig,
+
+  // 确保基本代码质量规则保持启用
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,vue}'],
+    rules: {
+      // 这些是代码质量规则，不会与Prettier冲突
+      'no-console': 'warn',
+      'no-debugger': 'warn',
+      'no-unused-vars': 'warn',
+      'no-undef': 'error',
+      'no-redeclare': 'error',
     },
   },
 ];
-
-// 添加Prettier配置
-config.push({
-  // 应用于所有文件
-  plugins: {
-    prettier,
-  },
-  rules: {
-    // 启用Prettier规则
-    'prettier/prettier': 'error',
-    // 禁用可能与Prettier冲突的ESLint规则
-    'arrow-parens': 'off',
-    'generator-star-spacing': 'off',
-    'object-curly-spacing': 'off',
-    'quote-props': 'off',
-    semi: 'off',
-    'space-before-function-paren': 'off',
-    'brace-style': 'off',
-    'comma-dangle': 'off',
-    indent: 'off',
-    'max-len': 'off',
-    quotes: 'off',
-  },
-});
 
 export default config;

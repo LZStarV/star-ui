@@ -9,9 +9,8 @@ hero:
   actions:
     - theme: brand
       text: 快速上手
-      link: /quickStart
+      link: /guide
     - theme: alt
       text: 组件
-      link: /component
-
+      link: /components
 ---
